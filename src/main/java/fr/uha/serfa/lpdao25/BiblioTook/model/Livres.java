@@ -2,14 +2,14 @@ package fr.uha.serfa.lpdao25.BiblioTook.model;
 
 import java.time.LocalDate;
 
-public class Livre {
+public class Livres {
     private final int id;
     private final String titre;
     private final String isbn;
-    private final String auteur;
+    private final Author auteur;
     private final LocalDate dateParution;
 
-    public Livre(int id, String titre, String isbn, String auteur, LocalDate date) {
+    public Livres(int id, String titre, String isbn, Author auteur, LocalDate date) {
         this.id = id;
         this.titre = titre;
         this.isbn = isbn;
@@ -28,7 +28,7 @@ public class Livre {
         return this.isbn;
     }
 
-    public String getAuteur() {
+    public Author getAuteur() {
         return this.auteur;
     }
 
