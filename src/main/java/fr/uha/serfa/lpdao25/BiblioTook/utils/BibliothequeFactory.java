@@ -14,24 +14,24 @@ public class BibliothequeFactory {
     private static Optional<Bibliotheque> bibSingleton = Optional.empty();
 
     public static Bibliotheque getBigBibliotheque() {
-        if (bibSingleton.isPresent()) {
+        if(bibSingleton.isPresent()){
             return bibSingleton.get();
         }
 
         List<Auteur> auteurs = new ArrayList<>();
-        auteurs.add(new Auteur("Fred", "Fred", LocalDate.of(1900, 10, 10)));
-        auteurs.add(new Auteur("John", "Doe", LocalDate.of(1980, 5, 15)));
-        auteurs.add(new Auteur("Jane", "Smith", LocalDate.of(1975, 8, 20)));
-        auteurs.add(new Auteur("Alice", "Johnson", LocalDate.of(1990, 12, 5)));
-        auteurs.add(new Auteur("Bob", "Brown", LocalDate.of(1965, 3, 30)));
-        auteurs.add(new Auteur("Charlie", "Davis", LocalDate.of(1950, 7, 25)));
-        auteurs.add(new Auteur("David", "Wilson", LocalDate.of(2000, 1, 10)));
-        auteurs.add(new Auteur("Eve", "Taylor", LocalDate.of(1995, 11, 15)));
-        auteurs.add(new Auteur("Frank", "Anderson", LocalDate.of(1985, 4, 18)));
-        auteurs.add(new Auteur("Grace", "Thomas", LocalDate.of(1970, 9, 22)));
+        auteurs.add(new Auteur("Fred", "Fred", LocalDate.of(1900,10,10)));
+        auteurs.add(new Auteur("John", "Doe", LocalDate.of(1980,5,15)));
+        auteurs.add(new Auteur("Jane", "Smith", LocalDate.of(1975,8,20)));
+        auteurs.add(new Auteur("Alice", "Johnson", LocalDate.of(1990,12,5)));
+        auteurs.add(new Auteur("Bob", "Brown", LocalDate.of(1965,3,30)));
+        auteurs.add(new Auteur("Charlie", "Davis", LocalDate.of(1950,7,25)));
+        auteurs.add(new Auteur("David", "Wilson", LocalDate.of(2000,1,10)));
+        auteurs.add(new Auteur("Eve", "Taylor", LocalDate.of(1995,11,15)));
+        auteurs.add(new Auteur("Frank", "Anderson", LocalDate.of(1985,4,18)));
+        auteurs.add(new Auteur("Grace", "Thomas", LocalDate.of(1970,9,22)));
 
         List<Livre> livres = new ArrayList<>();
-        livres.add(new Livre("Evasion et retrouvailles", "OAYX083", LocalDate.of(2020, 10, 11), auteurs.get(0)));
+        livres.add(new Livre("Evasion et retrouvailles", "OAYX083", LocalDate.of(2020, 10,11), auteurs.get(0)));
         livres.add(new Livre("Aventure en mer", "BXYA123", LocalDate.of(2019, 5, 20), auteurs.get(1)));
         livres.add(new Livre("Mystère de la forêt", "CDEZ456", LocalDate.of(2018, 3, 15), auteurs.get(1)));
         livres.add(new Livre("Voyage dans l'espace", "FGHI789", LocalDate.of(2017, 7, 25), auteurs.get(1)));
@@ -66,4 +66,7 @@ public class BibliothequeFactory {
         bibSingleton = Optional.of(b);
         return b;
     }
+
+
+
 }

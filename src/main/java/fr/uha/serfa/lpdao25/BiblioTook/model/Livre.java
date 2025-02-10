@@ -2,10 +2,14 @@ package fr.uha.serfa.lpdao25.BiblioTook.model;
 
 import java.time.LocalDate;
 
+/**
+ * Représente un livre.
+ * Un livre est rédigé par UN auteur.
+ */
 public class Livre {
     private String titre = "50 nuances de Grey";
     private String ISBN = "1083KZH9D";
-    private LocalDate datePublication = LocalDate.of(2012,04,03);
+    private LocalDate datePublication = LocalDate.of(2012, 4, 3);
     private Auteur auteur = new Auteur();
 
     public Livre() {
@@ -27,6 +31,7 @@ public class Livre {
     public String getISBN() {
         return ISBN;
     }
+
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
@@ -39,5 +44,8 @@ public class Livre {
         return auteur;
     }
 
-
+    public void setAuteur(Auteur a) {
+        this.auteur = a;
+        a.addLivre(this);
+    }
 }

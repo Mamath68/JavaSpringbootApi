@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Représente un auteur de livre
+ * un auteur a rédigé des livres
+ */
 public class Auteur {
 
     private final List<Livre> livres = new ArrayList<>();
