@@ -3,6 +3,7 @@ package fr.uha.serfa.lpdao25.BiblioTook.utils;
 import fr.uha.serfa.lpdao25.BiblioTook.model.Auteur;
 import fr.uha.serfa.lpdao25.BiblioTook.model.Bibliotheque;
 import fr.uha.serfa.lpdao25.BiblioTook.model.Livre;
+import net.datafaker.Faker;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,24 +15,24 @@ public class BibliothequeFactory {
     private static Optional<Bibliotheque> bibSingleton = Optional.empty();
 
     public static Bibliotheque getBigBibliotheque() {
-        if(bibSingleton.isPresent()){
+        if (bibSingleton.isPresent()) {
             return bibSingleton.get();
         }
 
         List<Auteur> auteurs = new ArrayList<>();
-        auteurs.add(new Auteur("Fred", "Fred", LocalDate.of(1900,10,10)));
-        auteurs.add(new Auteur("John", "Doe", LocalDate.of(1980,5,15)));
-        auteurs.add(new Auteur("Jane", "Smith", LocalDate.of(1975,8,20)));
-        auteurs.add(new Auteur("Alice", "Johnson", LocalDate.of(1990,12,5)));
-        auteurs.add(new Auteur("Bob", "Brown", LocalDate.of(1965,3,30)));
-        auteurs.add(new Auteur("Charlie", "Davis", LocalDate.of(1950,7,25)));
-        auteurs.add(new Auteur("David", "Wilson", LocalDate.of(2000,1,10)));
-        auteurs.add(new Auteur("Eve", "Taylor", LocalDate.of(1995,11,15)));
-        auteurs.add(new Auteur("Frank", "Anderson", LocalDate.of(1985,4,18)));
-        auteurs.add(new Auteur("Grace", "Thomas", LocalDate.of(1970,9,22)));
+        auteurs.add(new Auteur("Fred", "Fred", LocalDate.of(1900, 10, 10)));
+        auteurs.add(new Auteur("John", "Doe", LocalDate.of(1980, 5, 15)));
+        auteurs.add(new Auteur("Jane", "Smith", LocalDate.of(1975, 8, 20)));
+        auteurs.add(new Auteur("Alice", "Johnson", LocalDate.of(1990, 12, 5)));
+        auteurs.add(new Auteur("Bob", "Brown", LocalDate.of(1965, 3, 30)));
+        auteurs.add(new Auteur("Charlie", "Davis", LocalDate.of(1950, 7, 25)));
+        auteurs.add(new Auteur("David", "Wilson", LocalDate.of(2000, 1, 10)));
+        auteurs.add(new Auteur("Eve", "Taylor", LocalDate.of(1995, 11, 15)));
+        auteurs.add(new Auteur("Frank", "Anderson", LocalDate.of(1985, 4, 18)));
+        auteurs.add(new Auteur("Grace", "Thomas", LocalDate.of(1970, 9, 22)));
 
         List<Livre> livres = new ArrayList<>();
-        livres.add(new Livre("Evasion et retrouvailles", "OAYX083", LocalDate.of(2020, 10,11), auteurs.get(0)));
+        livres.add(new Livre("Evasion et retrouvailles", "OAYX083", LocalDate.of(2020, 10, 11), auteurs.get(0)));
         livres.add(new Livre("Aventure en mer", "BXYA123", LocalDate.of(2019, 5, 20), auteurs.get(1)));
         livres.add(new Livre("Mystère de la forêt", "CDEZ456", LocalDate.of(2018, 3, 15), auteurs.get(1)));
         livres.add(new Livre("Voyage dans l'espace", "FGHI789", LocalDate.of(2017, 7, 25), auteurs.get(1)));
@@ -67,6 +68,23 @@ public class BibliothequeFactory {
         return b;
     }
 
+    public static Bibliotheque addRandomBooksToBigBib(int nbrAdded) {
+        Bibliotheque b = getBigBibliotheque();
+        Faker f = new Faker();
+        for (int i = 0; i < nbrAdded; i++) {
+            // données auteur
+            String nom = f.name().lastName();
+            String prenom = f.name().firstName();
+            LocalDate naissance = f.timeAndDate().birthday(10, 500);
+            Auteur a = new Auteur(nom, prenom, naissance);
+            // données livre
+            String titre = f.book().title();
+            String isbn = f.internet().password(10, 10, true, false, true);
+            LocalDate publication = f.timeAndDate().birthday(10, 500);
+            Livre l = new Livre(titre, isbn, publication, a);
 
-
+            b.getLivres().add(l);
+        }
+        return b;
+    }
 }
