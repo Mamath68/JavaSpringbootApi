@@ -1,15 +1,23 @@
 package fr.uha.serfa.lpdao25.BiblioTook.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 /**
- * Représente un livre.
+ * Représente un livre. <br/>
  * Un livre est rédigé par UN auteur.
  */
+@Entity
 public class Livre {
+    @Id
+    @GeneratedValue
+    @Column(nullable = false)
+    private Long id;
     private String titre = "50 nuances de Grey";
     private String ISBN = "1083KZH9D";
     private LocalDate datePublication = LocalDate.of(2012, 4, 3);
+    @ManyToOne
     private Auteur auteur = new Auteur();
 
     public Livre() {
@@ -24,12 +32,20 @@ public class Livre {
         this.auteur.addLivre(this);
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitre() {
-        return titre;
+        return this.titre;
     }
 
     public String getISBN() {
-        return ISBN;
+        return this.ISBN;
     }
 
     public void setISBN(String ISBN) {
@@ -37,15 +53,16 @@ public class Livre {
     }
 
     public LocalDate getDatePublication() {
-        return datePublication;
+        return this.datePublication;
     }
 
     public Auteur getAuteur() {
-        return auteur;
+        return this.auteur;
     }
 
     public void setAuteur(Auteur a) {
         this.auteur = a;
         a.addLivre(this);
     }
+
 }

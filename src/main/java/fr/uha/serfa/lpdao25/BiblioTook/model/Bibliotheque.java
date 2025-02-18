@@ -1,5 +1,9 @@
 package fr.uha.serfa.lpdao25.BiblioTook.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,10 +13,14 @@ import java.util.Set;
 /**
  * Représente une bibliothèque dans notre domaine (gestion de bibliothèques)
  */
+@Entity
 public class Bibliotheque {
+    @Id
+    private Long id;
 
-    private String adresse = "10 rue de la gare Mulhouse";
-    private String nom = "Bibliothèque municipale";
+    private String adresse = "18 grand rue Mulhouse";
+    private String nom = "Bibliothèque Central";
+    @OneToMany
     private List<Livre> livres = new ArrayList<>();
 
     public Bibliotheque() {
@@ -25,6 +33,14 @@ public class Bibliotheque {
         this.adresse = adresse;
         this.nom = nom;
         this.livres = livres;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAdresse() {
@@ -41,12 +57,11 @@ public class Bibliotheque {
 
     /**
      * Permets de connaitre l'ensemble des auteurs de la bibliothèque
-     *
-     * @return Set<Auteur>
+     * @return auteurs
      */
-    public Set<Auteur> tousLesAuteurs() {
+    public Set<Auteur> tousLesAuteurs(){
         Set<Auteur> auteurs = new HashSet<>();
-        for (Livre l : this.livres) {
+        for (Livre l : this.livres){
             auteurs.add(l.getAuteur());
         }
         return auteurs;
@@ -54,19 +69,16 @@ public class Bibliotheque {
 
     /**
      * Permets de connaitre tous les auteurs dont le NOM contient partiellement la chaine en paramettre
-     *
      * @param nomRecherche String
-     * @return Set<Auteur>
+     * @return auteursQuiMatchent
      */
-    public Set<Auteur> auteurParNom(String nomRecherche) {
+    public Set<Auteur> auteurParNom(String nomRecherche){
         Set<Auteur> auteursQuiMatchent = new HashSet<>();
-        for (Auteur a : this.tousLesAuteurs()) {
-            if (a.getNom().contains(nomRecherche)) {
+        for (Auteur a : this.tousLesAuteurs()){
+            if(a.getNom().contains(nomRecherche)){
                 auteursQuiMatchent.add(a);
             }
         }
-        return auteursQuiMatchent;
+        return  auteursQuiMatchent;
     }
-
-
 }

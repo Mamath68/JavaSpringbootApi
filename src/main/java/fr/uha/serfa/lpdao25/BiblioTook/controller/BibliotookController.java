@@ -24,7 +24,7 @@ public class BibliotookController {
         System.out.println(f.artist().name());
         System.out.println(f.timeAndDate().birthday(20, 500));
 
-        BibliothequeFactory.addRandomBooksToBigBib(100);
+        BibliothequeFactory.addRandomBooksToBibliotheque(100);
     }
 
     @GetMapping("/bibliotook/auteur")

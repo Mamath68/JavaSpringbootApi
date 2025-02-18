@@ -68,7 +68,7 @@ public class BibliothequeFactory {
         return b;
     }
 
-    public static Bibliotheque addRandomBooksToBigBib(int nbrAdded) {
+    public static void addRandomBooksToBibliotheque(int nbrAdded) {
         Bibliotheque b = getBigBibliotheque();
         Faker f = new Faker();
         for (int i = 0; i < nbrAdded; i++) {
@@ -85,6 +85,5 @@ public class BibliothequeFactory {
 
             b.getLivres().add(l);
         }
-        return b;
     }
 }
