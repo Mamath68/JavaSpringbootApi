@@ -20,7 +20,7 @@ public class BibliothequeFactory {
         }
 
         List<Auteur> auteurs = new ArrayList<>();
-        auteurs.add(new Auteur("Fred", "Fred", LocalDate.of(1900, 10, 10)));
+        auteurs.add(new Auteur("Testot", "Fred", LocalDate.of(1900, 10, 10)));
         auteurs.add(new Auteur("John", "Doe", LocalDate.of(1980, 5, 15)));
         auteurs.add(new Auteur("Jane", "Smith", LocalDate.of(1975, 8, 20)));
         auteurs.add(new Auteur("Alice", "Johnson", LocalDate.of(1990, 12, 5)));

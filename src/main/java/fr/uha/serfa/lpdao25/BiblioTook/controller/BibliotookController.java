@@ -4,6 +4,7 @@ import fr.uha.serfa.lpdao25.BiblioTook.controller.dto.AuteurSecurise;
 import fr.uha.serfa.lpdao25.BiblioTook.model.Auteur;
 import fr.uha.serfa.lpdao25.BiblioTook.model.Bibliotheque;
 import fr.uha.serfa.lpdao25.BiblioTook.model.Livre;
+import fr.uha.serfa.lpdao25.BiblioTook.model.Usager;
 import fr.uha.serfa.lpdao25.BiblioTook.utils.BibliothequeFactory;
 import net.datafaker.Faker;
 import org.springframework.http.HttpStatus;
@@ -41,25 +42,6 @@ public class BibliotookController {
         return new Auteur();
     }
 
-    @PostMapping("/bibliotook/auteur")
-    public Auteur ajoutAuteurAleatoire() {
-        Faker faker = new Faker();
-        String nom = faker.onePiece().character();
-        String prenom = faker.tron().character();
-        LocalDate naissance = faker.timeAndDate().birthday(19, 500);
-        Auteur a = new Auteur(nom, prenom, naissance);
-
-        String titre = faker.book().title();
-        String isbn = faker.code().isbn10();
-        LocalDate datePublication = faker.timeAndDate().birthday(19, 500);
-        Livre l = new Livre(titre, isbn, datePublication, a);
-
-        Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
-        b.getLivres().add(l);
-
-        return a;
-    }
-
     /**
      * renvoit un auteur sécurisé ; un auteur sans password et dont le livre n'affiche pas son auteur (evite la récursivité) <br/>
      * explicite l'usage de DTO pour masquer des informations <br/>
@@ -95,46 +77,6 @@ public class BibliotookController {
     }
 
     /**
-     * premier post réalisé <br/>
-     * receptionne un livre sous forme de JSON et l'ajoute à la bibliothèque <br/>
-     * mappé sur /bibliotook/livre
-     *
-     * @param l - un livre transformé par jackson depuis le corp de la requete
-     * @return la bibliotèque avec le livre ajouté
-     */
-    @PostMapping("/bibliotook/livre")
-    public Bibliotheque ajouterLivre(@RequestBody Livre l) {
-        Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
-        b.getLivres().add(l);
-        return b;
-    }
-
-
-    /**
-     * une route qui permet d'ajouter un livre à la bibliothèque <br/>
-     * l'auteur du livre est passé en argument de la route <br/>
-     * si l'auteur n'existe pas dans la bibliothèque le livre n'est pas ajouté <br/>
-     * la route ajouter "ajouter livre a auteur existant" de postman permet de tester cette route <br/>
-     * mappée sur /bibliotook/livre/auteurNom
-     *
-     * @return ResponseEntity
-     */
-    @PostMapping("/bibliotook/livre/{name}")
-    public ResponseEntity<Bibliotheque> ajouterLivreCorrectement(@RequestBody Livre l, @PathVariable(value = "name") String nomAuteur) {
-        Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
-        Set<Auteur> auteurs = b.auteurParNom(nomAuteur);
-
-        for (Auteur a : auteurs) {
-            if (a.getNom().equals(nomAuteur)) {
-                b.getLivres().add(l);
-                l.setAuteur(a);
-                return new ResponseEntity<>(b, HttpStatus.CREATED);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    /**
      * renvoi une nouvelle instance de livre <br/>
      * mappé sur la route /bibliotook/livre
      *
@@ -167,5 +109,61 @@ public class BibliotookController {
         return BibliothequeFactory.getBigBibliotheque();
     }
 
+    @PostMapping("/bibliotook/auteur")
+    public Auteur ajoutAuteurAleatoire() {
+        Faker faker = new Faker();
+        String nom = faker.onePiece().character();
+        String prenom = faker.tron().character();
+        LocalDate naissance = faker.timeAndDate().birthday(19, 500);
+        Auteur a = new Auteur(nom, prenom, naissance);
 
+        String titre = faker.book().title();
+        String isbn = faker.code().isbn10();
+        LocalDate datePublication = faker.timeAndDate().birthday(19, 500);
+        Livre l = new Livre(titre, isbn, datePublication, a);
+
+        Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
+        b.getLivres().add(l);
+
+        return a;
+    }
+
+    /**
+     * premier post réalisé <br/>
+     * receptionne un livre sous forme de JSON et l'ajoute à la bibliothèque <br/>
+     * mappé sur /bibliotook/livre
+     *
+     * @param l - un livre transformé par jackson depuis le corp de la requete
+     * @return la bibliotèque avec le livre ajouté
+     */
+    @PostMapping("/bibliotook/livre")
+    public Bibliotheque ajouterLivre(@RequestBody Livre l) {
+        Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
+        b.getLivres().add(l);
+        return b;
+    }
+
+    /**
+     * une route qui permet d'ajouter un livre à la bibliothèque <br/>
+     * l'auteur du livre est passé en argument de la route <br/>
+     * si l'auteur n'existe pas dans la bibliothèque le livre n'est pas ajouté <br/>
+     * la route ajouter "ajouter livre a auteur existant" de postman permet de tester cette route <br/>
+     * mappée sur /bibliotook/livre/auteurNom
+     *
+     * @return ResponseEntity
+     */
+    @PostMapping("/bibliotook/livre/{name}")
+    public ResponseEntity<Bibliotheque> ajouterLivreCorrectement(@RequestBody Livre l, @PathVariable(value = "name") String nomAuteur) {
+        Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
+        Set<Auteur> auteurs = b.auteurParNom(nomAuteur);
+
+        for (Auteur a : auteurs) {
+            if (a.getNom().equals(nomAuteur)) {
+                b.getLivres().add(l);
+                l.setAuteur(a);
+                return new ResponseEntity<>(b, HttpStatus.CREATED);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
