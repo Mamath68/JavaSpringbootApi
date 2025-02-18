@@ -15,52 +15,50 @@ import java.util.Optional;
 @RequestMapping("/bibliotook")
 public class UsagerController {
 
-    private final UsagerRepository lesUsagerDeLaDB;
+    private final UsagerRepository db_user;
 
     public UsagerController(UsagerRepository ur) {
-        this.lesUsagerDeLaDB = ur;
+        this.db_user = ur;
 
-        lesUsagerDeLaDB.save(new Usager());
-        Usager u = new Usager("Fred", "Fred", LocalDate.now());
-        lesUsagerDeLaDB.save(u);
+        db_user.save(new Usager());
+        Usager u = new Usager("Testot", "Fred", LocalDate.now());
+        db_user.save(u);
 
-        System.out.println(lesUsagerDeLaDB.findAll());
-
+        System.out.println(db_user.findAll());
     }
-
 
     @GetMapping("/usager")
     public List<Usager> getAllUsager() {
-        return lesUsagerDeLaDB.findAll();
+        return db_user.findAll();
     }
 
     @GetMapping("/usager/{id}")
     public ResponseEntity<Usager> getUsagerParID(@PathVariable Long id) {
-        Optional<Usager> peutetreUsager = lesUsagerDeLaDB.findById(id);
+        Optional<Usager> peutetreUsager = db_user.findById(id);
         if (peutetreUsager.isPresent())
             return new ResponseEntity<>(peutetreUsager.get(), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         // autre facon :
-        // return lesUsagerDeLaDB.getReferenceById(id);
+        // return db_user.getReferenceById(id);
     }
 
     @PostMapping("/usager")
     public Usager addUsager(@RequestBody Usager usagerASauvegarder) {
-        return lesUsagerDeLaDB.save(usagerASauvegarder);
+        return db_user.save(usagerASauvegarder);
     }
 
     @DeleteMapping("/usager/{id}")
     public void deleteUsager(@PathVariable Long id) {
-        lesUsagerDeLaDB.deleteById(id);
+        db_user.deleteById(id);
     }
 
     @PatchMapping("/usager/{id}")
     public void updateUsager(@PathVariable Long id, @RequestBody Usager usagerData) {
-        Usager u = lesUsagerDeLaDB.getReferenceById(id);
+        Usager u = db_user.getReferenceById(id);
         u.setNaissance(usagerData.getNaissance());
         u.setNom(usagerData.getNom());
         u.setPrenom(usagerData.getPrenom());
-        lesUsagerDeLaDB.save(u);
+        db_user.save(u);
     }
 
 

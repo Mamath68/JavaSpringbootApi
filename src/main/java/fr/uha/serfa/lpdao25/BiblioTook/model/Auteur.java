@@ -1,7 +1,9 @@
 package fr.uha.serfa.lpdao25.BiblioTook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,10 +14,10 @@ import java.util.List;
  * un auteur a rédigé des livres
  */
 @Entity
-public class Auteur extends Utilisateurs{
-    @OneToMany
-    private List<Livre> livres = new ArrayList<>();
+public class Auteur extends Utilisateurs {
     public String password = "monPass";
+    @OneToMany(mappedBy = "auteur", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Livre> livres = new ArrayList<>();
 
     public Auteur() {
     }
@@ -26,24 +28,24 @@ public class Auteur extends Utilisateurs{
         this.naissance = naissance;
     }
 
-    @JsonIgnore
-    public List<Livre> getLivres() {
-        return this.livres;
-    }
-
-    public void setLivres(List<Livre> livres) {
-        this.livres = livres;
-    }
-
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void addLivre(Livre l){
+    @JsonIgnore
+    public List<Livre> getLivres() {
+        return livres;
+    }
+
+    public void setLivres(List<Livre> livres) {
+        this.livres = livres;
+    }
+
+    public void addLivre(Livre l) {
         this.livres.add(l);
     }
 }

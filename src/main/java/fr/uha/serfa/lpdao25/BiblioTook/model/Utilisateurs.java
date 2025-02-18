@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public abstract class Utilisateurs {
     @Id
     @GeneratedValue
+    @Column(nullable = false)
     protected Long id;
 
     protected String nom = "James";
@@ -17,7 +18,7 @@ public abstract class Utilisateurs {
     protected LocalDate naissance = LocalDate.of(1963, 3, 7);
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -25,7 +26,7 @@ public abstract class Utilisateurs {
     }
 
     public String getNom() {
-        return nom;
+        return this.nom;
     }
 
     public void setNom(String nom) {
@@ -33,7 +34,7 @@ public abstract class Utilisateurs {
     }
 
     public String getPrenom() {
-        return prenom;
+        return this.prenom;
     }
 
     public void setPrenom(String prenom) {
@@ -41,7 +42,7 @@ public abstract class Utilisateurs {
     }
 
     public LocalDate getNaissance() {
-        return naissance;
+        return this.naissance;
     }
 
     public void setNaissance(LocalDate naissance) {
