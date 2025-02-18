@@ -1,9 +1,5 @@
 package fr.uha.serfa.lpdao25.BiblioTook.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,16 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Représente une bibliothèque dans notre domaine (gestion de bibliothèques)
+ * représente une bibliothèque dans notre domaine (gestion de bibliothèques)
  */
-@Entity
 public class Bibliotheque {
-    @Id
-    private Long id;
 
-    private String adresse = "18 grand rue Mulhouse";
-    private String nom = "Bibliothèque Central";
-    @OneToMany
+    private String adresse = "10 rue de la gare Mulhouse";
+    private String nom = "Bibliothèque municipale";
     private List<Livre> livres = new ArrayList<>();
 
     public Bibliotheque() {
@@ -35,20 +27,12 @@ public class Bibliotheque {
         this.livres = livres;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getAdresse() {
-        return adresse;
+        return this.adresse;
     }
 
     public String getNom() {
-        return nom;
+        return this.nom;
     }
 
     public List<Livre> getLivres() {
@@ -56,29 +40,33 @@ public class Bibliotheque {
     }
 
     /**
-     * Permets de connaitre l'ensemble des auteurs de la bibliothèque
+     * permet de connaitre l'ensemble des auteurs de la bibliothèque
+     *
      * @return auteurs
      */
-    public Set<Auteur> tousLesAuteurs(){
+    public Set<Auteur> tousLesAuteurs() {
         Set<Auteur> auteurs = new HashSet<>();
-        for (Livre l : this.livres){
+        for (Livre l : this.livres) {
             auteurs.add(l.getAuteur());
         }
         return auteurs;
     }
 
     /**
-     * Permets de connaitre tous les auteurs dont le NOM contient partiellement la chaine en paramettre
+     * permet de connaitre tous les auteurs dont le NOM contient partiellement la chaine en paramettre
+     *
      * @param nomRecherche String
      * @return auteursQuiMatchent
      */
-    public Set<Auteur> auteurParNom(String nomRecherche){
+    public Set<Auteur> auteurParNom(String nomRecherche) {
         Set<Auteur> auteursQuiMatchent = new HashSet<>();
-        for (Auteur a : this.tousLesAuteurs()){
-            if(a.getNom().contains(nomRecherche)){
+        for (Auteur a : this.tousLesAuteurs()) {
+            if (a.getNom().contains(nomRecherche)) {
                 auteursQuiMatchent.add(a);
             }
         }
-        return  auteursQuiMatchent;
+        return auteursQuiMatchent;
     }
+
+
 }

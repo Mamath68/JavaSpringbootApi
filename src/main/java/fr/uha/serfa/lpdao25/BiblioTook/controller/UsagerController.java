@@ -1,58 +1,67 @@
 package fr.uha.serfa.lpdao25.BiblioTook.controller;
 
+
 import fr.uha.serfa.lpdao25.BiblioTook.dao.UsagerRepository;
 import fr.uha.serfa.lpdao25.BiblioTook.model.Usager;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/bibliotook")
 public class UsagerController {
-    private final UsagerRepository userRepo;
 
-    public UsagerController(UsagerRepository userRepo) {
-        this.userRepo = userRepo;
+    private final UsagerRepository lesUsagerDeLaDB;
+
+    public UsagerController(UsagerRepository ur) {
+        this.lesUsagerDeLaDB = ur;
+
+        lesUsagerDeLaDB.save(new Usager());
+        Usager u = new Usager("Fred", "Fred", LocalDate.now());
+        lesUsagerDeLaDB.save(u);
+
+        System.out.println(lesUsagerDeLaDB.findAll());
+
     }
+
 
     @GetMapping("/usager")
     public List<Usager> getAllUsager() {
-        return userRepo.findAll();
+        return lesUsagerDeLaDB.findAll();
     }
 
     @GetMapping("/usager/{id}")
-    public Optional<Usager> getOneUsagerById(@PathVariable Long id) {
-        return userRepo.findById(id);
+    public ResponseEntity<Usager> getUsagerParID(@PathVariable Long id) {
+        Optional<Usager> peutetreUsager = lesUsagerDeLaDB.findById(id);
+        if (peutetreUsager.isPresent())
+            return new ResponseEntity<>(peutetreUsager.get(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // autre facon :
+        // return lesUsagerDeLaDB.getReferenceById(id);
     }
 
     @PostMapping("/usager")
-    public Usager addUser(@RequestBody Usager usager) {
-        return userRepo.save(usager);
-    }
-
-    @DeleteMapping("/usager")
-    public void deleteAllUsager() {
-        userRepo.deleteAll();
+    public Usager addUsager(@RequestBody Usager usagerASauvegarder) {
+        return lesUsagerDeLaDB.save(usagerASauvegarder);
     }
 
     @DeleteMapping("/usager/{id}")
-    public void deleteOnUsagerById(@PathVariable Long id) {
-        userRepo.deleteById(id);
+    public void deleteUsager(@PathVariable Long id) {
+        lesUsagerDeLaDB.deleteById(id);
     }
 
     @PatchMapping("/usager/{id}")
-    public Usager updateOnUsagerById(@PathVariable Long id, @RequestBody Usager usagerDetails) {
-        Usager usager = userRepo.findById(id).orElseThrow(() -> new RuntimeException("Usager not found"));
-        usager.setNom(usagerDetails.getNom());
-        usager.setPrenom(usagerDetails.getPrenom());
-        usager.setNaissance(usagerDetails.getNaissance());
-        usager.setNbrLivresEmprunt(usagerDetails.getNbrLivresEmprunt());
-        return userRepo.save(usager);
+    public void updateUsager(@PathVariable Long id, @RequestBody Usager usagerData) {
+        Usager u = lesUsagerDeLaDB.getReferenceById(id);
+        u.setNaissance(usagerData.getNaissance());
+        u.setNom(usagerData.getNom());
+        u.setPrenom(usagerData.getPrenom());
+        lesUsagerDeLaDB.save(u);
     }
 
-    @PatchMapping("/usager")
-    public List<Usager> updateAllUsager(@RequestBody List<Usager> usagers) {
-        return userRepo.saveAll(usagers);
-    }
+
 }

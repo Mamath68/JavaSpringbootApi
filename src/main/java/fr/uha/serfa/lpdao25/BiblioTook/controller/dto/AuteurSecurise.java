@@ -16,7 +16,7 @@ public class AuteurSecurise {
 
     public AuteurSecurise(Auteur a) {
         this.nom = a.getNom();
-        this.dateNaissance = a.getDateNaissance();
+        this.dateNaissance = a.getNaissance();
         this.prenom = a.getPrenom();
         for (Livre aTransformer : a.getLivres()) {
             LivreSansAuteur lsa = new LivreSansAuteur(aTransformer);

@@ -8,21 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Représente un auteur de livre. <br/>
- * Un auteur a rédigé des livres
+ * représente un auteur de livre <br/>
+ * un auteur a rédigé des livres
  */
 @Entity
-public class Auteur {
-
-    @Id
-    @GeneratedValue
-    @Column(nullable = false)
-    private Long id;
-    private String nom = "James";
-    private String prenom = "Erika Leonard";
-    private LocalDate naissance = LocalDate.of(1963, 3, 7);
+public class Auteur extends Utilisateurs{
     @OneToMany
-    private final List<Livre> livres = new ArrayList<>();
+    private List<Livre> livres = new ArrayList<>();
     public String password = "monPass";
 
     public Auteur() {
@@ -34,32 +26,24 @@ public class Auteur {
         this.naissance = naissance;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return this.nom;
-    }
-
-    public String getPrenom() {
-        return this.prenom;
-    }
-
-    public LocalDate getDateNaissance() {
-        return this.naissance;
-    }
-
     @JsonIgnore
     public List<Livre> getLivres() {
         return this.livres;
     }
 
-    public void addLivre(Livre l) {
+    public void setLivres(List<Livre> livres) {
+        this.livres = livres;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void addLivre(Livre l){
         this.livres.add(l);
     }
 }

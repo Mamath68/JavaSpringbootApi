@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * illustration d'un controlleur "utile" pour un projet
+ */
 @RestController
 public class BibliotookController {
 
@@ -27,6 +30,12 @@ public class BibliotookController {
         BibliothequeFactory.addRandomBooksToBibliotheque(100);
     }
 
+    /**
+     * renvoi une nouvelle instance d'auteur <br/>
+     * mappé sur la route /bibliotook/auteur
+     *
+     * @return Auteur()
+     */
     @GetMapping("/bibliotook/auteur")
     public Auteur basicAuteur() {
         return new Auteur();
@@ -51,6 +60,13 @@ public class BibliotookController {
         return a;
     }
 
+    /**
+     * renvoit un auteur sécurisé ; un auteur sans password et dont le livre n'affiche pas son auteur (evite la récursivité) <br/>
+     * explicite l'usage de DTO pour masquer des informations <br/>
+     * mappé sur la route /bibliotook/auteurLivre
+     *
+     * @return AuteurSecurise()
+     */
     @GetMapping("/bibliotook/auteurLivre")
     public AuteurSecurise auteurAvecLivre() {
         Auteur a = new Auteur();
@@ -59,6 +75,13 @@ public class BibliotookController {
         return new AuteurSecurise(a);
     }
 
+    /**
+     * permet de récupérer la liste de tous les auteurs dont le nom match avec le paramettre d'URL "name" <br/>
+     * mappé sur la route /bibliotook/auteur/name
+     *
+     * @param nomRecherche - mappé avec "name"
+     * @return les auteurs récupérés sont des auteurs sécurisés (pas de password, livres n'affichent pas leurs auteurs
+     */
     @GetMapping("/bibliotook/auteur/{name}")
     public List<AuteurSecurise> getAuteurByName(@PathVariable(value = "name") String nomRecherche) {
         Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
@@ -71,6 +94,14 @@ public class BibliotookController {
         return auteurSecurises;
     }
 
+    /**
+     * premier post réalisé <br/>
+     * receptionne un livre sous forme de JSON et l'ajoute à la bibliothèque <br/>
+     * mappé sur /bibliotook/livre
+     *
+     * @param l - un livre transformé par jackson depuis le corp de la requete
+     * @return la bibliotèque avec le livre ajouté
+     */
     @PostMapping("/bibliotook/livre")
     public Bibliotheque ajouterLivre(@RequestBody Livre l) {
         Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
@@ -78,6 +109,16 @@ public class BibliotookController {
         return b;
     }
 
+
+    /**
+     * une route qui permet d'ajouter un livre à la bibliothèque <br/>
+     * l'auteur du livre est passé en argument de la route <br/>
+     * si l'auteur n'existe pas dans la bibliothèque le livre n'est pas ajouté <br/>
+     * la route ajouter "ajouter livre a auteur existant" de postman permet de tester cette route <br/>
+     * mappée sur /bibliotook/livre/auteurNom
+     *
+     * @return ResponseEntity
+     */
     @PostMapping("/bibliotook/livre/{name}")
     public ResponseEntity<Bibliotheque> ajouterLivreCorrectement(@RequestBody Livre l, @PathVariable(value = "name") String nomAuteur) {
         Bibliotheque b = BibliothequeFactory.getBigBibliotheque();
@@ -87,22 +128,40 @@ public class BibliotookController {
             if (a.getNom().equals(nomAuteur)) {
                 b.getLivres().add(l);
                 l.setAuteur(a);
-                return new ResponseEntity(b, HttpStatus.CREATED);
+                return new ResponseEntity<>(b, HttpStatus.CREATED);
             }
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * renvoi une nouvelle instance de livre <br/>
+     * mappé sur la route /bibliotook/livre
+     *
+     * @return Livre()
+     */
     @GetMapping("/bibliotook/livre")
     public Livre basicLivre() {
         return new Livre();
     }
 
+    /**
+     * renvoi une nouvelle instance de bibliothèque <br/>
+     * mappé sur la route /bibliotook/bibliotheque
+     *
+     * @return Bibliotheque
+     */
     @GetMapping("/bibliotook/bibliotheque")
     public Bibliotheque basicBibliotheque() {
         return new Bibliotheque();
     }
 
+    /**
+     * renvoi la bibliothèque singleton existant dans le serveur. <br/>
+     * mappé sur la route /bibliotook/bibliothequeBig
+     *
+     * @return BibliothequeFactory()
+     */
     @GetMapping("/bibliotook/bibliothequeBig")
     public Bibliotheque bigBibliotheque() {
         return BibliothequeFactory.getBigBibliotheque();

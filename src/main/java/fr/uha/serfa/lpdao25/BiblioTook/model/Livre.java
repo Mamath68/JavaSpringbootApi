@@ -14,9 +14,11 @@ public class Livre {
     @GeneratedValue
     @Column(nullable = false)
     private Long id;
+
     private String titre = "50 nuances de Grey";
     private String ISBN = "1083KZH9D";
     private LocalDate datePublication = LocalDate.of(2012, 4, 3);
+
     @ManyToOne
     private Auteur auteur = new Auteur();
 
@@ -33,7 +35,7 @@ public class Livre {
     }
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
@@ -41,11 +43,15 @@ public class Livre {
     }
 
     public String getTitre() {
-        return this.titre;
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
     }
 
     public String getISBN() {
-        return this.ISBN;
+        return ISBN;
     }
 
     public void setISBN(String ISBN) {
@@ -53,16 +59,19 @@ public class Livre {
     }
 
     public LocalDate getDatePublication() {
-        return this.datePublication;
+        return datePublication;
+    }
+
+    public void setDatePublication(LocalDate datePublication) {
+        this.datePublication = datePublication;
     }
 
     public Auteur getAuteur() {
-        return this.auteur;
+        return auteur;
     }
 
     public void setAuteur(Auteur a) {
         this.auteur = a;
         a.addLivre(this);
     }
-
 }
